@@ -3,74 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyunki Saas Bhi Kabhi Bahu Thi 2 Promos</title>
-    <link rel="stylesheet" href="styles.css">
-    </head>
-<body>
+    <title>Promo Aggregator - Dailymotion App</title>
+    
+    <style>
+        /* General Reset and Dark Theme Setup */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117; /* Dark background */
+            color: #ffffff; /* White text */
+        }
 
-    <header class="navbar">
-        <span class="logo">PromoApp</span>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Watchlist</a>
-            <a href="#">TV Shows</a>
-        </nav>
-    </header>
+        /* Split Screen Layout */
+        .app-layout {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+        }
 
-    <main class="content-container">
+        /* LEFT Panel: Content */
+        .content-panel {
+            flex: 60%; /* Takes up about 60% of the screen */
+            background-color: #161b22; /* Slightly lighter dark background for contrast */
+            padding: 20px;
+            overflow-y: auto; /* Allows scrolling if content is too long */
+        }
+
+        /* RIGHT Panel: Sidebar/Help */
+        .sidebar-panel {
+            flex: 40%; /* Takes up about 40% of the screen */
+            background-color: #ffffff; /* White background like the image */
+            color: #000000;
+            padding: 30px;
+        }
+
+        .sidebar-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-panel li {
+            padding: 10px 0;
+            font-size: 1.1em;
+            cursor: default;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Featured Video Area Styling */
+        .featured-video-container {
+            background-color: #000;
+            height: 350px; /* Adjust height as needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* Episode Navigation */
+        .episode-nav {
+            display: flex;
+            gap: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 20px;
+        }
+
+        .episode-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            padding-bottom: 5px;
+        }
+
+        .episode-nav .active {
+            color: red;
+            border-bottom: 2px solid red;
+        }
+
+        /* Promo Card List */
+        .promo-list-container {
+            padding-top: 5px; 
+        }
         
-        <section class="video-player-section">
-            <div class="video-player">
-                
-                <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://www.dailymotion.com/embed/video/x9usd3a?autoplay=0&mute=0" 
-                    frameborder="0" 
-                    allow="autoplay; encrypted-media; fullscreen" 
-                    allowfullscreen
-                ></iframe>
-                
-            </div>
+        .promo-card {
+            display: flex;
+            margin-bottom: 15px;
+            background-color: #21262d; 
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer; 
+            transition: all 0.1s;
+        }
+
+        .promo-card:hover {
+            background-color: #30363d; 
+        }
+        
+        .active-promo {
+            border: 2px solid red; /* Highlight the active card */
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+        }
+
+        .promo-thumbnail {
+            width: 160px;
+            height: 90px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 2px;
+        }
+
+        .promo-info h3 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .promo-info p {
+            margin: 5px 0 0 0;
+            font-size: 0.85em;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="app-layout">
+        
+        <div class="content-panel">
+            <header class="content-header">
+                <div class="featured-video-container">
+                    </div>
+            </header>
             
-            <div class="video-overlay">
-                <h2>KSBKBT2 Promo: Tulsi's Emotional Farewell (Episode 188)</h2>
-                
-                <p class="new-episodes">New Episodes: Mon-Sun at 10:30PM</p>
-                
-                <p class="description">Watch the heartbreaking moments as Tulsi prepares to leave the Virani family mansion forever. Don't miss the drama this Monday!</p>
-                
-                <div class="tags">
-                    <span>Drama</span>
-                    <span>Family</span>
-                    <span>UA 16+</span>
-                    <span>Hindi</span>
+            <nav class="episode-nav">
+                <a href="#" class="active">Episodes</a>
+                <a href="#">More Like This</a>
+                <a href="#">Trailers & More</a>
+            </nav>
+            
+            <div class="promo-list-container">
                 </div>
-                <button class="watch-button">▶ Watch Latest Episode</button>
-            </div>
-        </section>
+        </div>
+        
+        <div class="sidebar-panel">
+            <h2>Hi Piyush</h2>
+            <h1>Where should we start?</h1>
+            <ul>
+                <li>Create Image</li>
+                <li>Create a video</li>
+                <li>Write anything</li>
+                <li>Help me learn</li>
+                <li>Boost my day</li>
+            </ul>
+        </div>
 
-        <section class="details-section">
-            <div class="tabs">
-                <button class="tab-button active">Episodes</button>
-                <button class="tab-button">More Like This</button>
-                <button class="tab-button">Extras</button>
-            </div>
+    </div>
 
-            <div class="episode-list">
-                <h3>Season 1</h3>
-                <div class="episode-item">
-                    <img src="episode_thumb_1.jpg" alt="Episode Thumbnail" class="episode-thumb">
-                    <div class="episode-info">
-                        <h4>S1 E1 | Tulsi's Return</h4>
-                        <p>25 Nov 2025 · 28m</p>
-                        <p class="episode-desc">Tulsi returns to the haveli, facing new challenges and old enemies. A new family secret threatens to tear everything apart.</p>
+    <script>
+        // --- 1. PROMO DATA ---
+        const promos = [
+            {
+                id: 'promo-1',
+                title: "Tulsi, Hrithik's PI Mission",
+                subtitle: "S2 E125 • 30 Nov • 28m",
+                thumbnailUrl: "https://via.placeholder.com/160x90/FF5733/ffffff?text=LATEST+PROMO",
+                // Uses the Dailymotion ID provided by you
+                embedUrl: "https://www.dailymotion.com/embed/video/x9usd3a" 
+            },
+            {
+                id: 'promo-2',
+                title: "The Ultimate Showdown: Finale Teaser",
+                subtitle: "Trailer • 1 Dec • 1m",
+                thumbnailUrl: "https://via.placeholder.com/160x90/33FF57/000000?text=FINALE+2",
+                // Example Dailymotion embed link
+                embedUrl: "https://www.dailymotion.com/embed/video/x8c7j7e" 
+            },
+            {
+                id: 'promo-3',
+                title: "Behind the Scenes: Bloopers",
+                subtitle: "Extra • 2 Dec • 5m",
+                thumbnailUrl: "https://via.placeholder.com/160x90/3357FF/ffffff?text=BLOOPERS+3",
+                // Example Dailymotion embed link
+                embedUrl: "https://www.dailymotion.com/embed/video/x60z1v" 
+            }
+        ];
+
+        // --- 2. DOM ELEMENT SELECTORS ---
+        const featuredVideoContainer = document.querySelector('.featured-video-container');
+        const promoListContainer = document.querySelector('.promo-list-container');
+        
+
+        // --- 3. CORE FUNCTIONS ---
+
+        /**
+         * Loads a Dailymotion video into the main featured area.
+         * @param {string} url - The Dailymotion embed URL.
+         */
+        function loadFeaturedVideo(url) {
+            featuredVideoContainer.innerHTML = ''; 
+
+            // Create and configure the Dailymotion iframe element
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('title', 'Dailymotion video player');
+            iframe.setAttribute('width', '100%');
+            iframe.setAttribute('height', '100%'); 
+            iframe.setAttribute('src', url);
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'autoplay; picture-in-picture');
+            iframe.setAttribute('allowfullscreen', 'true');
+
+            featuredVideoContainer.appendChild(iframe);
+        }
+
+        /**
+         * Creates the HTML element for a single promo card.
+         * @param {object} promo - The promo data object.
+         * @returns {string} - The HTML string for the card.
+         */
+        function createPromoCard(promo) {
+            return `
+                <div class="promo-card" data-embed-url="${promo.embedUrl}" id="${promo.id}">
+                    <img src="${promo.thumbnailUrl}" alt="${promo.title} Thumbnail" class="promo-thumbnail">
+                    <div class="promo-info">
+                        <h3>${promo.title}</h3>
+                        <p>${promo.subtitle}</p>
                     </div>
                 </div>
-            </div>
-        </section>
+            `;
+        }
 
-    </main>
+        /**
+         * Renders the entire list of promos and sets up click listeners.
+         */
+        function renderPromoList() {
+            // Generate the HTML for all cards and insert them
+            const cardHtml = promos.map(createPromoCard).join('');
+            promoListContainer.innerHTML = cardHtml;
 
-    </body>
+            // Set up event listeners for each newly created card
+            const newPromoCards = document.querySelectorAll('.promo-card');
+            
+            newPromoCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const url = card.getAttribute('data-embed-url');
+                    loadFeaturedVideo(url);
+                    
+                    // Highlight the clicked card
+                    newPromoCards.forEach(c => c.classList.remove('active-promo'));
+                    card.classList.add('active-promo');
+                });
+            });
+            
+            // Highlight the first card by default
+            if (newPromoCards.length > 0) {
+                newPromoCards[0].classList.add('active-promo');
+            }
+        }
+
+        // --- 4. INITIALIZATION ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render the list of all promos first
+            renderPromoList();
+
+            // Load the first promo in the array as the featured video when the page loads
+            if (promos.length > 0) {
+                loadFeaturedVideo(promos[0].embedUrl);
+            }
+        });
+    </script>
+</body>
 </html>
