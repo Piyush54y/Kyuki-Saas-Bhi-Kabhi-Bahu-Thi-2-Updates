@@ -1,0 +1,184 @@
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
+    line-height: 1.6;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #000000;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffcc00; /* Highlight color */
+}
+
+.navbar nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.navbar nav a:hover {
+    opacity: 1;
+}
+
+/* Main Content Area */
+.content-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Video Player Section */
+.video-player-section {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.video-player {
+    width: 100%;
+    height: 500px; /* Adjust height as needed */
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.promo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7; /* Dim the image for text overlay */
+}
+
+.video-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+}
+
+.video-overlay h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.new-episodes {
+    color: #cccccc;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.description {
+    max-width: 60%;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+.tags span {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.watch-button {
+    background-color: #ffcc00;
+    color: #121212;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.watch-button:hover {
+    background-color: #e0b300;
+}
+
+/* Details Section (Tabs & Episodes) */
+.tabs {
+    border-bottom: 1px solid #333;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s, border-bottom 0.2s;
+}
+
+.tab-button:hover, .tab-button.active {
+    opacity: 1;
+    border-bottom: 3px solid #ffcc00;
+}
+
+.episode-list h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.episode-item {
+    display: flex;
+    background-color: #1f1f1f;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 15px;
+    align-items: center;
+}
+
+.episode-thumb {
+    width: 150px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.episode-info h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.episode-info p {
+    color: #b0b0b0;
+    font-size: 14px;
+}
+
+.episode-desc {
+    font-size: 14px;
+    margin-top: 5px;
+    max-width: 90%;
+}
