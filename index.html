@@ -6,11 +6,12 @@
     <title>Kyunki Saas Bhi Kabhi Bahu Thi</title>
     
     <style>
-        /* Define the specific accent color */
+        /* Define the specific accent color and theme variables */
         :root {
             --accent-color: #e51d3b; /* A deep red/pinkish-red for highlights */
             --dark-bg: #0d1117;
             --panel-bg: #121212;
+            --sidebar-bg: #000000; /* Pure black for the sidebar */
             --card-bg: #21262d;
             --text-light: #f5f5f5;
             --text-muted: #8b949e;
@@ -24,59 +25,106 @@
             color: var(--text-light);
         }
 
-        /* Split Screen Layout (Kept for the second image's layout) */
+        /* --- LAYOUT: FLEX CONTAINER --- */
         .app-layout {
             display: flex;
             height: 100vh; 
         }
 
-        /* LEFT Panel: Content */
-        .content-panel {
-            flex: 1; /* Make it full width if the sidebar is removed, or 60% if kept */
-            background-color: var(--panel-bg); 
-            padding: 20px 40px; /* Increased padding */
-            overflow-y: auto; 
-            max-width: 1200px; /* Content width constraint */
+        /* --- 1. SIDEBAR STYLING --- */
+        .sidebar {
+            width: 80px; /* Narrow width as seen in the image */
+            background-color: var(--sidebar-bg);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #1a1a1a; /* Subtle separation line */
         }
         
-        /* RIGHT Panel: Placeholder Sidebar (Kept but minimized its visual impact) */
-        .sidebar-panel {
-            flex: 0; /* Hides the sidebar for a cleaner look matching the main screen */
-            display: none; 
-        }
-
-        /* --- HEADER AREA STYLING --- */
-
-        .show-details {
-            max-width: 600px; /* Constrain text width */
+        .sidebar-logo {
+            color: var(--text-light);
+            font-size: 2em;
             margin-bottom: 30px;
         }
 
+        .nav-section {
+            width: 100%;
+            padding: 10px 0;
+            border-top: 1px solid #1a1a1a;
+        }
+        
+        .nav-section:first-child {
+            border-top: none;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.75em;
+        }
+
+        .nav-item:hover {
+            background-color: #1a1a1a;
+            color: var(--text-light);
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+            border-left: 2px solid var(--accent-color); /* Highlight bar on the left */
+            background-color: #1a1a1a;
+        }
+
+        .nav-item span {
+            margin-top: 5px;
+        }
+
+        /* --- 2. CONTENT PANEL STYLING (Adjusted to sit next to sidebar) --- */
+        .content-panel {
+            flex: 1; 
+            background-color: var(--panel-bg); 
+            padding: 20px 40px; 
+            overflow-y: auto; 
+            max-width: calc(100% - 80px); /* Adjust max width based on sidebar */
+        }
+
+        /* RIGHT Panel: Placeholder (Removed/Hidden) */
+        .sidebar-panel {
+            display: none;
+        }
+
+        /* --- HEADER AREA STYLING --- */
+        .show-details {
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
         .logo-and-title {
             display: flex;
             align-items: center;
             margin-bottom: 15px;
         }
-
         .show-logo {
             width: 120px;
             height: auto;
             margin-right: 20px;
         }
-
         .metadata-line {
             font-size: 0.9em;
             color: var(--text-muted);
             margin-top: 5px;
             margin-bottom: 10px;
         }
-
         .description {
             font-size: 1em;
             line-height: 1.6;
             margin-bottom: 20px;
         }
-
         .genre-tags {
             display: flex;
             gap: 15px;
@@ -86,7 +134,6 @@
         }
 
         /* --- BUTTON STYLING --- */
-
         .action-button {
             display: inline-flex;
             align-items: center;
@@ -101,11 +148,9 @@
             transition: background-color 0.2s;
             text-decoration: none;
         }
-
         .action-button:hover {
             background-color: #c91834;
         }
-
         .button-date {
             margin-left: 10px;
             font-size: 0.9em;
@@ -113,17 +158,14 @@
         }
 
         /* --- VIDEO PLAYER STYLING --- */
-
         .featured-video-container {
-            /* This mimics the large hero video area */
             background-color: #000;
-            height: 600px; /* Larger height for the hero video */
+            height: 600px;
             position: relative;
             margin-bottom: 40px;
         }
 
         /* --- NAVIGATION STYLING --- */
-
         .episode-nav {
             display: flex;
             gap: 30px;
@@ -131,7 +173,6 @@
             border-bottom: 1px solid #30363d;
             margin-bottom: 30px;
         }
-
         .episode-nav a {
             color: var(--text-muted);
             text-decoration: none;
@@ -139,40 +180,34 @@
             padding-bottom: 10px;
             transition: color 0.2s, border-bottom 0.2s;
         }
-
         .episode-nav .active {
             color: var(--text-light);
             border-bottom: 2px solid var(--text-light);
         }
 
         /* --- PROMO CARD LIST STYLING --- */
-        
         .section-header {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 20px;
             color: var(--text-light);
         }
-
         .promo-card {
             display: flex;
             margin-bottom: 15px;
             padding: 15px 10px;
             border-radius: 4px;
-            cursor: pointer; 
+            cursor: pointer;
             transition: background-color 0.1s;
         }
-
         .promo-card:hover {
-            background-color: #1a1a1a; 
+            background-color: #1a1a1a;
         }
-        
         .active-promo {
             background-color: #1a1a1a;
-            border-left: 3px solid var(--accent-color); 
+            border-left: 3px solid var(--accent-color);
             padding-left: 7px;
         }
-
         .promo-thumbnail {
             width: 160px;
             height: 90px;
@@ -180,25 +215,21 @@
             margin-right: 20px;
             border-radius: 2px;
         }
-
         .promo-info {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-
         .promo-info h3 {
             margin: 0;
             font-size: 1.1em;
             font-weight: 600;
         }
-
         .promo-info .subtitle {
             margin: 2px 0 5px 0;
             font-size: 0.8em;
             color: var(--text-muted);
         }
-
         .promo-info .card-description {
             font-size: 0.9em;
             color: var(--text-muted);
@@ -213,6 +244,50 @@
 <body>
     
     <div class="app-layout">
+        
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <span style="font-size: 1.5em; color: white;">★</span>
+            </div>
+
+            <div class="nav-section">
+                <a href="#" class="nav-item active">
+                    <span style="font-size: 1.2em;">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">🔎</span>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">📺</span>
+                    <span>TV</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">🎥</span>
+                    <span>Movies</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">⚽</span>
+                    <span>Sports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">✨</span>
+                    <span>Sparks</span>
+                </a>
+            </div>
+
+            <div class="nav-section" style="flex-grow: 1; width: 100%;">
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">📂</span>
+                    <span>Categories</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span style="font-size: 1.2em;">👤</span>
+                    <span>My Space</span>
+                </a>
+            </div>
+        </div>
         
         <div class="content-panel">
 
@@ -270,7 +345,7 @@
     </div>
 
     <script>
-        // --- 1. PROMO DATA (Updated to include a description) ---
+        // --- 1. PROMO DATA ---
         const promos = [
             {
                 id: 'promo-1',
@@ -278,7 +353,7 @@
                 subtitle: "S2 E126 • 1 Dec 2025 • 1m",
                 description: "Tulsi and Hrithik hire a PI to investigate Ramji, unaware that Raman hired the same PI for Nonna. Meanwhile, Angad and Mihir emotionally avoid each other.",
                 thumbnailUrl: "https://i.ibb.co/WvCkT4Cn/vlcsnap-2025-12-01-21h41m06s190.png",
-                // Your provided Dailymotion ID is used here
+                // Dailymotion ID is used here
                 embedUrl: "https://www.dailymotion.com/embed/video/x9usd3a" 
             },
             {
