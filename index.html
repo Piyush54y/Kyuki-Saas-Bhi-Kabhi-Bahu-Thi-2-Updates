@@ -1,458 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyunki Saas Bhi Kabhi Bahu Thi</title>
+// ... (The promos array remains the same) ...
+
+// --- 2. DOM ELEMENT SELECTORS ---
+const featuredVideoContainer = document.querySelector('.featured-video-container');
+const promoListContainer = document.querySelector('.promo-list-container');
+const searchInput = document.getElementById('searchInput'); // NEW
+const searchButton = document.getElementById('searchButton'); // NEW
+
+// --- 3. CORE FUNCTIONS ---
+
+// ... (loadFeaturedVideo and createPromoCard functions remain the same) ...
+
+
+/**
+ * Renders the entire list of promos, optionally filtering them.
+ * @param {Array} filteredPromos - The list of promos to display (defaults to the full list).
+ */
+function renderPromoList(filteredPromos = promos) { // Function updated to accept a filter
+    // Generate the HTML for filtered cards
+    const cardHtml = filteredPromos.map(createPromoCard).join('');
+    promoListContainer.innerHTML = cardHtml;
+
+    // ... (rest of the click listener setup remains the same) ...
+    const newPromoCards = document.querySelectorAll('.promo-card');
     
-    <style>
-        /* Define the specific accent color and theme variables */
-        :root {
-            --accent-color: #e51d3b; /* A deep red/pinkish-red for highlights */
-            --dark-bg: #0d1117;
-            --panel-bg: #121212;
-            --sidebar-bg: #000000; /* Pure black for the sidebar */
-            --card-bg: #21262d;
-            --text-light: #f5f5f5;
-            --text-muted: #8b949e;
-        }
-
-        /* General Reset and Dark Theme Setup */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-        }
-
-        /* --- LAYOUT: FLEX CONTAINER --- */
-        .app-layout {
-            display: flex;
-            height: 100vh; 
-        }
-
-        /* --- 1. SIDEBAR STYLING --- */
-        .sidebar {
-            width: 80px; /* Narrow width as seen in the image */
-            background-color: var(--sidebar-bg);
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-right: 1px solid #1a1a1a; /* Subtle separation line */
-        }
-        
-        .sidebar-logo {
-            color: var(--text-light);
-            font-size: 2em;
-            margin-bottom: 30px;
-        }
-
-        .nav-section {
-            width: 100%;
-            padding: 10px 0;
-            border-top: 1px solid #1a1a1a;
-        }
-        
-        .nav-section:first-child {
-            border-top: none;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 15px 0;
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.75em;
-        }
-
-        .nav-item:hover {
-            background-color: #1a1a1a;
-            color: var(--text-light);
-        }
-
-        .nav-item.active {
-            color: var(--accent-color);
-            border-left: 2px solid var(--accent-color); /* Highlight bar on the left */
-            background-color: #1a1a1a;
-        }
-
-        .nav-item span {
-            margin-top: 5px;
-        }
-
-        /* --- 2. CONTENT PANEL STYLING (Adjusted to sit next to sidebar) --- */
-        .content-panel {
-            flex: 1; 
-            background-color: var(--panel-bg); 
-            padding: 20px 40px; 
-            overflow-y: auto; 
-            max-width: calc(100% - 80px); /* Adjust max width based on sidebar */
-        }
-
-        /* RIGHT Panel: Placeholder (Removed/Hidden) */
-        .sidebar-panel {
-            display: none;
-        }
-
-        /* --- HEADER AREA STYLING --- */
-        .show-details {
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-        .logo-and-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .show-logo {
-            width: 120px;
-            height: auto;
-            margin-right: 20px;
-        }
-        .metadata-line {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-        .description {
-            font-size: 1em;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        .genre-tags {
-            display: flex;
-            gap: 15px;
-            font-weight: bold;
-            font-size: 0.95em;
-            margin-bottom: 30px;
-        }
-
-        /* --- BUTTON STYLING --- */
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1em;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-decoration: none;
-        }
-        .action-button:hover {
-            background-color: #c91834;
-        }
-        .button-date {
-            margin-left: 10px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        /* --- VIDEO PLAYER STYLING --- */
-        .featured-video-container {
-            background-color: #000;
-            height: 600px;
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        /* --- NAVIGATION STYLING --- */
-        .episode-nav {
-            display: flex;
-            gap: 30px;
-            padding: 10px 0;
-            border-bottom: 1px solid #30363d;
-            margin-bottom: 30px;
-        }
-        .episode-nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: bold;
-            padding-bottom: 10px;
-            transition: color 0.2s, border-bottom 0.2s;
-        }
-        .episode-nav .active {
-            color: var(--text-light);
-            border-bottom: 2px solid var(--text-light);
-        }
-
-        /* --- PROMO CARD LIST STYLING --- */
-        .section-header {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: var(--text-light);
-        }
-        .promo-card {
-            display: flex;
-            margin-bottom: 15px;
-            padding: 15px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.1s;
-        }
-        .promo-card:hover {
-            background-color: #1a1a1a;
-        }
-        .active-promo {
-            background-color: #1a1a1a;
-            border-left: 3px solid var(--accent-color);
-            padding-left: 7px;
-        }
-        .promo-thumbnail {
-            width: 160px;
-            height: 90px;
-            object-fit: cover;
-            margin-right: 20px;
-            border-radius: 2px;
-        }
-        .promo-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .promo-info h3 {
-            margin: 0;
-            font-size: 1.1em;
-            font-weight: 600;
-        }
-        .promo-info .subtitle {
-            margin: 2px 0 5px 0;
-            font-size: 0.8em;
-            color: var(--text-muted);
-        }
-        .promo-info .card-description {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body>
-    
-    <div class="app-layout">
-        
-        <div class="sidebar">
-            <div class="sidebar-logo">
-                <span style="font-size: 1.5em; color: white;">★</span>
-            </div>
-
-            <div class="nav-section">
-                <a href="#" class="nav-item active">
-                    <span style="font-size: 1.2em;">🏠</span>
-                    <span>Home</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">🔎</span>
-                    <span>Search</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">📺</span>
-                    <span>TV</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">🎥</span>
-                    <span>Movies</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">⚽</span>
-                    <span>Sports</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">✨</span>
-                    <span>Sparks</span>
-                </a>
-            </div>
-
-            <div class="nav-section" style="flex-grow: 1; width: 100%;">
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">📂</span>
-                    <span>Categories</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <span style="font-size: 1.2em;">👤</span>
-                    <span>My Space</span>
-                </a>
-            </div>
-        </div>
-        
-        <div class="content-panel">
-
-            <div class="featured-video-container">
-                </div>
-
-            <div class="show-details">
-                <div class="logo-and-title">
-                    <img src="https://i.ibb.co/bM8hLt4R/Screenshot-2025-12-01-215017.png" alt="Show Logo" class="show-logo">
-                    <div>
-                        <h2>Kyunki Saas Bhi Kabhi Bahu Thi</h2>
-                        <div class="metadata-line">
-                            <span style="color: red;">2025</span> • U/A 16+ • Hindi
-                        </div>
-                        <div class="metadata-line">
-                            New Episodes Mon-Sun at 10:30PM
-                        </div>
-                    </div>
-                </div>
-
-                <p class="description">
-                    Time flow by, yet Tulsi Virani stood strong as the Sarvagunn matriarchi. Can she navigate the challenges of modern-day parenting and relationships?
-                </p>
-
-                <div class="genre-tags">
-                    <span>Drama</span>
-                    <span>Family</span>
-                    <span>Parenthood</span>
-                    <span>Family-Friendly</span>
-                </div>
-                
-                <a href="#" class="action-button">
-                    ▶️ Watch Latest Episode Below
-                    <span class="button-date"></span>
-                </a>
-            </div>
+    newPromoCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const url = card.getAttribute('data-embed-url');
+            loadFeaturedVideo(url);
             
-            <nav class="episode-nav">
-                <a href="#" class="active">Episodes</a>
-                <a href="#">More Like This</a>
-                <a href="#">Extras</a>
-                <a href="#">Trailers & More</a>
-            </nav>
-            
-            <div class="promo-list-section">
-                <h3 class="section-header">Season 2</h3>
-                <div class="promo-list-container">
-                    </div>
-            </div>
-
-        </div>
-        
-        <div class="sidebar-panel"></div>
-
-    </div>
-
-    <script>
-        // --- 1. PROMO DATA ---
-        const promos = [
-            {
-                id: 'promo-1',
-                title: "Tulsi,Mihir Deal",
-                subtitle: "S2 E126 • 1 Dec 2025 • 1m",
-                description: "Tulsi and Hrithik hire a PI to investigate Ramji, unaware that Raman hired the same PI for Nonna. Meanwhile, Angad and Mihir emotionally avoid each other.",
-                thumbnailUrl: "https://i.ibb.co/WvCkT4Cn/vlcsnap-2025-12-01-21h41m06s190.png",
-                // Dailymotion ID is used here
-                embedUrl: "https://www.dailymotion.com/embed/video/x9usd3a" 
-            },
-            {
-                id: 'promo-2',
-                title: "Tulsi and Mihir's property deal!",
-                subtitle: "2 Dec 2025 • 1m",
-                description: "A quick teaser showcasing the major plot point of the new episode: a disagreement over a large family property. Drama ensues!",
-                thumbnailUrl: "https://i.ibb.co/bM8hLt4R/Screenshot-2025-12-01-215017.png",
-                embedUrl: "https://www.dailymotion.com/playlist/xaoqow" 
-            },
-            {
-                id: 'promo-3',
-                title: "Tulsi and Mihir's deal! (Thumbnail)",
-                subtitle: "Extra • 3 Dec 2025 • 1m",
-                description: "A different angle of the same promo, uploaded to test the thumbnail feature.",
-                thumbnailUrl: "https://i.ibb.co/bM8hLt4R/Screenshot-2025-12-01-215017.png",
-                embedUrl: "https://www.dailymotion.com/playlist/xaoqow" 
-            }
-        ];
-
-        // --- 2. DOM ELEMENT SELECTORS ---
-        const featuredVideoContainer = document.querySelector('.featured-video-container');
-        const promoListContainer = document.querySelector('.promo-list-container');
-        
-
-        // --- 3. CORE FUNCTIONS ---
-
-        /**
-         * Loads a Dailymotion video into the main featured area.
-         */
-        function loadFeaturedVideo(url) {
-            featuredVideoContainer.innerHTML = ''; 
-
-            const iframe = document.createElement('iframe');
-            iframe.setAttribute('title', 'Dailymotion video player');
-            iframe.setAttribute('width', '100%');
-            iframe.setAttribute('height', '100%'); 
-            iframe.setAttribute('src', url);
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allow', 'autoplay; picture-in-picture');
-            iframe.setAttribute('allowfullscreen', 'true');
-
-            featuredVideoContainer.appendChild(iframe);
-        }
-
-        /**
-         * Creates the HTML element for a single promo card.
-         */
-        function createPromoCard(promo) {
-            return `
-                <div class="promo-card" data-embed-url="${promo.embedUrl}" id="${promo.id}">
-                    <img src="${promo.thumbnailUrl}" alt="${promo.title} Thumbnail" class="promo-thumbnail">
-                    <div class="promo-info">
-                        <div class="subtitle">${promo.subtitle}</div>
-                        <h3>${promo.title}</h3>
-                        <p class="card-description">${promo.description}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        /**
-         * Renders the entire list of promos and sets up click listeners.
-         */
-        function renderPromoList() {
-            // Generate the HTML for all cards and insert them
-            const cardHtml = promos.map(createPromoCard).join('');
-            promoListContainer.innerHTML = cardHtml;
-
-            // Set up event listeners for each newly created card
-            const newPromoCards = document.querySelectorAll('.promo-card');
-            
-            newPromoCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const url = card.getAttribute('data-embed-url');
-                    loadFeaturedVideo(url);
-                    
-                    // Highlight the clicked card
-                    newPromoCards.forEach(c => c.classList.remove('active-promo'));
-                    card.classList.add('active-promo');
-                });
-            });
-            
-            // Highlight the first card by default
-            if (newPromoCards.length > 0) {
-                newPromoCards[0].classList.add('active-promo');
-            }
-        }
-
-        // --- 4. INITIALIZATION ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPromoList();
-
-            // Load the first promo in the array as the featured video when the page loads
-            if (promos.length > 0) {
-                loadFeaturedVideo(promos[0].embedUrl);
-            }
+            // Highlight the clicked card
+            newPromoCards.forEach(c => c.classList.remove('active-promo'));
+            card.classList.add('active-promo');
         });
-    </script>
-</body>
-</html>
+    });
+    
+    // Highlight the first card of the *filtered* list by default
+    if (newPromoCards.length > 0) {
+        loadFeaturedVideo(filteredPromos[0].embedUrl); // Load the first video of the filtered list
+        newPromoCards[0].classList.add('active-promo');
+    } else {
+        // Clear video if no results found
+        featuredVideoContainer.innerHTML = '<p style="color: var(--text-muted); padding: 50px;">No promos match your search.</p>';
+    }
+}
+
+
+/**
+ * Executes the search logic and re-renders the promo list.
+ */
+function handleSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    
+    // If the search box is empty, show the full list
+    if (query === '') {
+        renderPromoList(promos);
+        return;
+    }
+
+    // Filter the promos array based on the query
+    const results = promos.filter(promo => {
+        const titleMatch = promo.title.toLowerCase().includes(query);
+        const descriptionMatch = promo.description.toLowerCase().includes(query);
+        
+        return titleMatch || descriptionMatch;
+    });
+
+    renderPromoList(results);
+}
+
+
+// --- 4. INITIALIZATION AND EVENT LISTENERS ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial rendering of the full list
+    renderPromoList(promos); 
+
+    // Add event listener for the Search button
+    searchButton.addEventListener('click', handleSearch);
+
+    // Allow search on Enter key press in the input field
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    });
+
+    // You mentioned opening a URL when clicking 'Start'. 
+    // Since your app *is* the URL, we'll assume the 'Home' button acts as 'Start'.
+    // The "Home" button is already active, leading to this page.
+});
+
+// Note: Removed initial loadFeaturedVideo(promos[0].embedUrl) from the bottom 
+// because renderPromoList now handles the initial load of the first video in the list.
