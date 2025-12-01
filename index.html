@@ -20,20 +20,24 @@
     <main class="content-container">
         
         <section class="video-player-section">
-            <div class="video-player">
-                <img src="promo_placeholder.jpg" alt="Kyunki Saas Bhi Kabhi Bahu Thi 2 Promo" class="promo-image">
-                <div class="video-overlay">
-                    <h2>Kyunki Saas Bhi Kabhi Bahu Thi 2</h2>
-                    <p class="new-episodes">New Episodes: Mon-Sun at 10:30PM</p>
-                    <p class="description">Tune in daily to follow the dramatic journey of the Virani family, navigating love, complex relationships, and high-stakes drama.</p>
-                    <div class="tags">
-                        <span>Drama</span>
-                        <span>Family</span>
-                        <span>UA 16+</span>
-                        <span>Hindi</span>
-                    </div>
-                    <button class="watch-button">▶ Watch Latest Episode</button>
+            <div id="video-container" class="video-player">
+                <p style="text-align:center; padding:150px; color:#ccc;">Loading latest promo...</p>
+            </div>
+            
+            <div class="video-overlay">
+                <h2 id="daily-title">Loading Promo Title...</h2>
+                
+                <p class="new-episodes">New Episodes: Mon-Sun at 10:30PM</p>
+                
+                <p class="description" id="synopsis-text">Fetching latest synopsis...</p>
+                
+                <div class="tags">
+                    <span>Drama</span>
+                    <span>Family</span>
+                    <span>UA 16+</span>
+                    <span>Hindi</span>
                 </div>
+                <button class="watch-button">▶ Watch Latest Episode</button>
             </div>
         </section>
 
@@ -54,10 +58,51 @@
                         <p class="episode-desc">Tulsi returns to the haveli, facing new challenges and old enemies. A new family secret threatens to tear everything apart.</p>
                     </div>
                 </div>
-                </div>
+            </div>
         </section>
 
     </main>
 
-    </body>
+    <script>
+        // Fetch the data from the external JSON file
+        fetch('promo_data.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Construct the DailyMotion embed URL
+                // Format: https://www.dailymotion.com/embed/video/{videoId}
+                const embedUrl = `https://www.dailymotion.com/embed/video/${data.videoId}?autoplay=1&mute=0`;
+
+                // Create the IFRAME element
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('width', '100%');
+                iframe.setAttribute('height', '100%');
+                iframe.setAttribute('src', embedUrl);
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allow', 'autoplay; encrypted-media');
+                iframe.setAttribute('allowfullscreen', '');
+                
+                // Inject the IFRAME into the placeholder div
+                const videoContainer = document.getElementById('video-container');
+                videoContainer.innerHTML = ''; // Clear the "Loading" message
+                videoContainer.appendChild(iframe);
+                
+                // Update the text elements using data from the JSON
+                document.getElementById('daily-title').textContent = data.title;
+                document.getElementById('synopsis-text').textContent = data.synopsis;
+
+            })
+            .catch(error => {
+                console.error('Error loading promo data:', error);
+                // Fallback content if the file fails to load
+                document.getElementById('daily-title').textContent = 'Error: Could not load the latest promo.';
+                document.getElementById('synopsis-text').textContent = 'Please check the file name and content of promo_data.json.';
+            });
+    </script>
+    
+</body>
 </html>
